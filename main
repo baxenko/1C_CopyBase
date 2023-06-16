@@ -1,0 +1,27 @@
+@echo off
+chcp 1251 >nul
+color 6
+set source_file=%USERPROFILE%\AppData\Roaming\1C\1CEStart\ibases.v8i
+set dest_folder=%AppData%\1C\1CEStart
+
+if not exist %dest_folder% mkdir %dest_folder%
+
+set copied_users=
+
+setlocal EnableDelayedExpansion
+
+for /D %%a in ("%SystemDrive%\Users\*") do (
+    if not "%%a"=="%USERPROFILE%" (
+        if exist "%%a\AppData\Roaming" (
+            xcopy "%source_file%" "%%a\AppData\Roaming\1C\1CEStart\" /y
+            set copied_users=!copied_users!%%~nxa,
+        )
+    )
+)
+
+echo.
+echo Список користувачів, котрим був скопійований файл:
+echo !copied_users!
+
+endlocal
+pause
